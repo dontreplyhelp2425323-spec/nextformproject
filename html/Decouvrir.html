@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Découvrir Next Form Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #141414;
+      --bg3: #1c1c1c;
+      --border: rgba(255,255,255,0.06);
+      --border2: rgba(255,255,255,0.12);
+      --text: #e5e5e5;
+      --muted: #525252;
+      --muted2: #a3a3a3;
+      --accent: #4ade80;
+      --accent2: #22c55e;
+      --accent-rgb: 74,222,128;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 24px;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 0.5px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+    .nav-back {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600; color: var(--muted2);
+      cursor: pointer; text-decoration: none;
+      background: var(--bg3); border: 0.5px solid var(--border2);
+      padding: 8px 14px; border-radius: 20px;
+      transition: all 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 100px 24px 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(74,222,128,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(74,222,128,0.1); border: 0.5px solid rgba(74,222,128,0.3);
+      border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 600; color: var(--accent);
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 28px;
+    }
+    .hero-logo {
+      font-family: var(--font-display); font-size: clamp(60px, 15vw, 110px);
+      font-weight: 800; color: var(--accent); letter-spacing: -4px;
+      line-height: 0.95; margin-bottom: 8px;
+    }
+    .hero-sub {
+      font-family: var(--font-display); font-size: clamp(12px, 2vw, 15px);
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted2);
+      margin-bottom: 30px;
+    }
+    .hero-tagline {
+      font-family: var(--font-display); font-size: clamp(22px, 5vw, 38px);
+      font-weight: 700; line-height: 1.2; margin-bottom: 16px;
+      max-width: 600px;
+    }
+    .hero-tagline span { color: var(--accent); }
+    .hero-desc {
+      font-size: 16px; color: var(--muted2); line-height: 1.8;
+      max-width: 480px; margin-bottom: 40px;
+    }
+    .hero-cta {
+      display: inline-block; background: var(--accent); color: #050f07;
+      font-family: var(--font-display); font-size: 15px; font-weight: 800;
+      padding: 16px 36px; border-radius: var(--radius); text-decoration: none;
+      transition: all 0.2s; cursor: pointer; border: none;
+    }
+    .hero-cta:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(74,222,128,0.25); }
+    .hero-cta:active { transform: scale(0.97); }
+    .hero-scroll { margin-top: 60px; color: var(--muted); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 8px; animation: bounce 2s infinite; }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      display: flex; justify-content: center; gap: 0;
+      border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border);
+      background: var(--bg2);
+    }
+    .stat-strip-item {
+      flex: 1; max-width: 200px; text-align: center; padding: 28px 20px;
+      border-right: 0.5px solid var(--border);
+    }
+    .stat-strip-item:last-child { border-right: none; }
+    .stat-strip-val { font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--accent); }
+    .stat-strip-label { font-size: 12px; color: var(--muted2); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── SECTIONS ── */
+    section { padding: 80px 24px; max-width: 960px; margin: 0 auto; }
+    .section-label { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
+    .section-h2 { font-family: var(--font-display); font-size: clamp(26px, 5vw, 42px); font-weight: 800; letter-spacing: -1px; margin-bottom: 14px; line-height: 1.15; }
+    .section-h2 span { color: var(--accent); }
+    .section-p { font-size: 15px; color: var(--muted2); line-height: 1.8; max-width: 520px; }
+
+    /* ── FEATURE BLOCKS ── */
+    .feature-block { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 100px; }
+    .feature-block.reverse { direction: rtl; }
+    .feature-block.reverse > * { direction: ltr; }
+    .feature-img-wrap { border-radius: var(--radius); overflow: hidden; position: relative; aspect-ratio: 4/3; }
+    .feature-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.85); transition: transform 0.4s; }
+    .feature-img-wrap:hover img { transform: scale(1.04); }
+    .feature-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(74,222,128,0.12) 0%, transparent 60%);
+    }
+    .feature-img-badge {
+      position: absolute; bottom: 14px; left: 14px;
+      background: rgba(10,10,10,0.85); backdrop-filter: blur(10px);
+      border: 0.5px solid var(--border2); border-radius: 10px;
+      padding: 8px 14px; font-size: 13px; font-weight: 600;
+    }
+    .feature-text { display: flex; flex-direction: column; gap: 16px; }
+    .feature-icon-wrap {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: rgba(74,222,128,0.1); border: 0.5px solid rgba(74,222,128,0.25);
+      display: flex; align-items: center; justify-content: center; font-size: 26px;
+    }
+    .feature-bullets { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+    .feature-bullet { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--muted2); line-height: 1.5; }
+    .bullet-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 6px; }
+
+    /* ── MINI FEATURES GRID ── */
+    .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 40px; }
+    .mini-card {
+      background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius);
+      padding: 20px 18px; transition: border-color 0.2s, transform 0.2s;
+    }
+    .mini-card:hover { border-color: rgba(74,222,128,0.3); transform: translateY(-3px); }
+    .mini-card-icon { font-size: 28px; margin-bottom: 12px; }
+    .mini-card-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .mini-card-desc { font-size: 12px; color: var(--muted2); line-height: 1.6; }
+
+    /* ── COMMUNITY ── */
+    .community-section {
+      background: var(--bg2); border: 0.5px solid var(--border);
+      border-radius: var(--radius); padding: 40px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .community-section::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .community-links { display: flex; gap: 12px; justify-content: center; margin-top: 28px; }
+    .community-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 24px; border-radius: var(--radius-sm);
+      font-family: var(--font-display); font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s; text-decoration: none;
+      border: 0.5px solid var(--border2);
+    }
+    .community-link.discord { background: rgba(88,101,242,0.12); border-color: rgba(88,101,242,0.3); color: #7289da; }
+    .community-link.discord:hover { background: rgba(88,101,242,0.2); transform: translateY(-2px); }
+    .community-link.telegram { background: rgba(0,136,204,0.12); border-color: rgba(0,136,204,0.3); color: #29b6f6; }
+    .community-link.telegram:hover { background: rgba(0,136,204,0.2); transform: translateY(-2px); }
+    .community-link-icon { font-size: 20px; }
+
+    /* ── CTA FINAL ── */
+    .cta-final {
+      text-align: center; padding: 80px 24px;
+      max-width: 600px; margin: 0 auto;
+    }
+    .cta-final .hero-logo { font-size: clamp(40px, 10vw, 70px); margin-bottom: 6px; }
+    .cta-final p { font-size: 15px; color: var(--muted2); margin: 16px 0 32px; line-height: 1.7; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 0.5px solid var(--border); padding: 24px;
+      text-align: center; font-size: 12px; color: var(--muted);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .feature-block { grid-template-columns: 1fr; gap: 24px; }
+      .feature-block.reverse { direction: ltr; }
+      .mini-grid { grid-template-columns: 1fr 1fr; }
+      .stats-strip { flex-wrap: wrap; }
+      .stat-strip-item { min-width: 50%; border-right: none; border-bottom: 0.5px solid var(--border); }
+      .community-links { flex-direction: column; align-items: center; }
+    }
+    @media (max-width: 480px) {
+      .mini-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">NFP</div>
+    <a class="nav-back" href="../index.html">← Se connecter</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">✦ La nouvelle façon de s'entraîner</div>
+    <div class="hero-logo">NEXT<br>FORM</div>
+    <div class="hero-sub">Project</div>
+    <div class="hero-tagline">L'entraînement devient une <span>compétition</span></div>
+    <p class="hero-desc">Suis tes performances, bats tes records et grimpe dans le classement avec tes amis. Chaque séance compte.</p>
+    <a class="hero-cta" href="../index.html">Rejoindre maintenant</a>
+    <div class="hero-scroll">
+      <span>Découvrir</span>
+      <span>↓</span>
+    </div>
+  </div>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stat-strip-item">
+      <div class="stat-strip-val">∞</div>
+      <div class="stat-strip-label">Séances possibles</div>
+    </div>
+    <div class="stat-strip-item">
+      <div class="stat-strip-val">5</div>
+      <div class="stat-strip-label">Thèmes de couleur</div>
+    </div>
+    <div class="stat-strip-item">
+      <div class="stat-strip-val">100%</div>
+      <div class="stat-strip-label">Gratuit</div>
+    </div>
+  </div>
+
+  <!-- FEATURE 1 — COMPÉTITION -->
+  <section>
+    <div class="feature-block">
+      <div class="feature-img-wrap">
+        <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80" alt="Compétition sportive" loading="lazy">
+        <div class="feature-img-overlay"></div>
+        <div class="feature-img-badge">🏆 Classement en direct</div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-icon-wrap">🏆</div>
+        <div>
+          <div class="section-label">Compétition</div>
+          <h2 class="section-h2">La soif de <span>compétition</span> comme moteur</h2>
+          <p class="section-p">Chaque exercice, chaque série te rapporte des points. Le classement hebdomadaire remet les compteurs à zéro — chaque semaine est une nouvelle chance de dominer.</p>
+        </div>
+        <div class="feature-bullets">
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Classement hebdomadaire et mensuel en temps réel</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Exo bonus de la semaine avec points x2</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Vois le profil et les stats de tes rivaux</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Activité récente de toute la communauté</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 2 — SÉANCES -->
+    <div class="feature-block reverse">
+      <div class="feature-img-wrap">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" alt="Salle de musculation" loading="lazy">
+        <div class="feature-img-overlay"></div>
+        <div class="feature-img-badge">🏋️ Séances guidées</div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-icon-wrap">🏋️</div>
+        <div>
+          <div class="section-label">Entraînement</div>
+          <h2 class="section-h2">Des séances <span>guidées</span> ou 100% perso</h2>
+          <p class="section-p">Choisis parmi les séances prédéfinies ou crée les tiennes entièrement. Chaque exercice est tracké avec tes séries, reps et charges.</p>
+        </div>
+        <div class="feature-bullets">
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Séances Full Body, Push, Pull, Legs et plus</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Créateur de séances personnalisées illimité</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Exercices avec variantes (facile / difficile)</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Partage tes séances avec la communauté</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 3 — NUTRITION -->
+    <div class="feature-block">
+      <div class="feature-img-wrap">
+        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80" alt="Alimentation saine et équilibrée" loading="lazy">
+        <div class="feature-img-overlay"></div>
+        <div class="feature-img-badge">🍽️ Suivi complet</div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-icon-wrap">🍽️</div>
+        <div>
+          <div class="section-label">Nutrition</div>
+          <h2 class="section-h2">L'alimentation, ton <span>arme secrète</span></h2>
+          <p class="section-p">Un tracker nutritionnel complet intégré directement dans l'app. Configure ton objectif calorique et suis tes macros jour après jour pour maximiser tes résultats.</p>
+        </div>
+        <div class="feature-bullets">
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Base de données alimentaire complète</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Suivi des calories, protéines, glucides, lipides</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Organisation par repas (petit-dej, déjeuner...)</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Objectifs : prise de masse, sèche ou maintien</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 4 — STATS & PRs -->
+    <div class="feature-block reverse">
+      <div class="feature-img-wrap">
+        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80" alt="Suivi de performance fitness" loading="lazy">
+        <div class="feature-img-overlay"></div>
+        <div class="feature-img-badge">📊 Tes records</div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-icon-wrap">📊</div>
+        <div>
+          <div class="section-label">Performance</div>
+          <h2 class="section-h2">Visualise ta <span>progression</span> en temps réel</h2>
+          <p class="section-p">Chaque séance alimente tes statistiques. Suis l'évolution de tes records personnels exercice par exercice et observe ta courbe de progression sur le long terme.</p>
+        </div>
+        <div class="feature-bullets">
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Records personnels (PRs) par exercice</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Graphiques d'évolution sur semaines et mois</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Historique complet de toutes tes séances</span></div>
+          <div class="feature-bullet"><div class="bullet-dot"></div><span>Estimation de progression et prédictions</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MINI FEATURES -->
+  <section style="padding-top: 0;">
+    <div class="section-label" style="text-align:center">Tout ce dont tu as besoin</div>
+    <h2 class="section-h2" style="text-align:center;max-width:100%">Et encore plus de <span>fonctionnalités</span></h2>
+    <div class="mini-grid">
+      <div class="mini-card">
+        <div class="mini-card-icon">⏱️</div>
+        <div class="mini-card-title">Chrono & Minuteur</div>
+        <div class="mini-card-desc">Chronomètre et minuteur intégrés avec préréglages pour gérer tes temps de repos à la seconde.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-icon">🔥</div>
+        <div class="mini-card-title">Série de jours</div>
+        <div class="mini-card-desc">Maintiens ta flamme active en t'entraînant régulièrement. Un joker par semaine pour les imprévus.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-icon">🎨</div>
+        <div class="mini-card-title">Thèmes personnalisés</div>
+        <div class="mini-card-desc">5 couleurs d'accent + mode sombre et clair. L'app s'adapte à ton style.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-icon">⭐</div>
+        <div class="mini-card-title">Exercice bonus</div>
+        <div class="mini-card-desc">Chaque semaine un exercice bonus sélectionné par les admins pour décupler tes points.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-icon">👤</div>
+        <div class="mini-card-title">Profil public</div>
+        <div class="mini-card-desc">Ton profil, ta photo, tes stats et tes séances visibles par toute la communauté.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-icon">🎯</div>
+        <div class="mini-card-title">Objectifs personnels</div>
+        <div class="mini-card-desc">Fixe-toi des objectifs de charge à atteindre sur un exercice avec suivi de progression.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section style="padding-top: 0;">
+    <div class="community-section">
+      <div class="section-label">Communauté</div>
+      <h2 class="section-h2" style="max-width:100%">Rejoins la <span>communauté</span></h2>
+      <p class="section-p" style="margin: 0 auto;">Échange avec les autres membres, partage tes résultats, signale des bugs ou propose des fonctionnalités. On construit Next Form ensemble.</p>
+      <div class="community-links">
+        <a class="community-link discord" href="https://discord.gg/evay3xKrFF" target="_blank" rel="noopener">
+          <span class="community-link-icon">💬</span>
+          <span>Rejoindre le Discord</span>
+        </a>
+        <a class="community-link telegram" href="https://t.me/next_form_project" target="_blank" rel="noopener">
+          <span class="community-link-icon">✈️</span>
+          <span>Suivre sur Telegram</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <div class="cta-final">
+    <div class="hero-logo">NEXT<br>FORM</div>
+    <p>Arrête de t'entraîner seul dans ton coin. Rejoins Next Form Project et transforme chaque séance en victoire.</p>
+    <a class="hero-cta" href="../index.html">Commencer maintenant — c'est gratuit</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Next Form Project — Fait avec 💚 pour la communauté</p>
+    <p style="margin-top:6px">
+      <a href="https://discord.gg/evay3xKrFF" target="_blank" style="color:var(--muted2);text-decoration:none;margin:0 8px">Discord</a>
+      <a href="https://t.me/next_form_project" target="_blank" style="color:var(--muted2);text-decoration:none;margin:0 8px">Telegram</a>
+    </p>
+  </footer>
+
+</body>
+</html>

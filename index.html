@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Next Form Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://hvzjqaahbbavzrrvsuwk.supabase.co">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="google-adsense-account" content="ca-pub-5988893601755144">
+</head>
+<body>
+
+  <!-- LOADING -->
+  <div class="loading-overlay" id="loading">
+    <div class="loading-logo">NEXT<br>FORM<br><span style="font-size:0.45em;letter-spacing:0.12em;opacity:0.6">PROJECT</span></div>
+    <div class="loading-text">Chargement...</div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ══════════ AUTH ══════════ -->
+  <div class="screen" id="screen-auth">
+    <div class="auth-main">
+      <div class="auth-logo">NEXT<br>FORM<br><span style="font-size:0.45em;letter-spacing:0.12em;opacity:0.6">PROJECT</span></div>
+      <div class="auth-tagline">Compète avec tes potes</div>
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Connexion</div>
+          <div class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Inscription</div>
+        </div>
+        <div id="form-login">
+          <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="ton@mail.com"></div>
+          <div class="field"><label>Mot de passe</label><input type="password" id="login-password" placeholder="••••••••"></div>
+          <button class="btn" onclick="handleLogin()">Se connecter</button>
+          <div class="forgot-link" onclick="handleForgotPassword()">Mot de passe oublié ?</div>
+        </div>
+        <div id="form-signup" style="display:none">
+          <div class="field"><label>Pseudo</label><input type="text" id="signup-pseudo" placeholder="TonPseudo"></div>
+          <div class="field"><label>Email</label><input type="email" id="signup-email" placeholder="ton@mail.com"></div>
+          <div class="field"><label>Mot de passe</label><input type="password" id="signup-password" placeholder="min. 6 caractères"></div>
+          <button class="btn" onclick="handleSignup()">Créer mon compte</button>
+        </div>
+        <div class="auth-error" id="auth-error"></div>
+      </div>
+      <button class="btn auth-discover-btn" onclick="window.open('html/Decouvrir.html','_blank')">Découvrir Next Form →</button>
+    </div>
+    <div class="auth-footer">
+      <div class="auth-footer-label">Communauté</div>
+      <div class="auth-footer-links">
+        <div class="auth-footer-link" onclick="window.open('https://discord.gg/evay3xKrFF','_blank')">
+          <span>💬</span><span>Discord</span>
+        </div>
+        <div class="auth-footer-link" onclick="window.open('https://t.me/next_form_project','_blank')">
+          <span>✈️</span><span>Telegram</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════ CLASSEMENT ══════════ -->
+  <div class="screen" id="screen-classement">
+    <div class="topbar">
+      <h1>Classement</h1>
+      <div class="subtitle" id="week-label">Semaine en cours</div>
+    </div>
+    <div class="scroll-area">
+      <div class="week-card">
+        <div class="week-label" id="period-label">Ton score cette semaine</div>
+        <div class="week-pts" id="my-week-pts">0 pts</div>
+        <div class="week-rank" id="my-week-rank">Fais ta première séance !</div>
+      </div>
+      <div class="bonus-card">
+        <div class="bonus-icon">⭐</div>
+        <div class="bonus-info">
+          <div class="bonus-label">Exo bonus de la semaine</div>
+          <div class="bonus-name" id="bonus-name">Chargement...</div>
+          <div class="bonus-pts">+50 pts bonus par série</div>
+        </div>
+      </div>
+      <div class="section-title">Activité récente</div>
+      <div class="activity-list" id="activity-list">
+        <div class="empty-state"><p>Chargement...</p></div>
+      </div>
+      <div class="section-title">Classement général</div>
+      <div class="rank-list" id="rank-list">
+        <div class="empty-state"><div class="empty-icon">🏆</div><p>Chargement...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ SÉANCE ══════════ -->
+  <div class="screen" id="screen-seance">
+    <div class="topbar">
+      <h1>Séance</h1>
+      <div class="subtitle" id="seance-date">Aujourd'hui</div>
+    </div>
+    <div class="scroll-area">
+      <div id="seance-streak" style="display:none"></div>
+      <div id="seance-content">
+        <div class="empty-state"><div class="empty-icon">🏋️</div><p>Chargement...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ CHRONO ══════════ -->
+  <div class="screen" id="screen-chrono">
+    <div class="topbar">
+      <h1>Chrono</h1>
+      <div class="subtitle">Timer & Minuteur</div>
+    </div>
+    <div class="scroll-area" id="chrono-content">
+      <div class="empty-state"><div class="empty-icon">⏱️</div><p>Chargement...</p></div>
+    </div>
+  </div>
+
+  <!-- ══════════ STATISTIQUES ══════════ -->
+  <div class="screen" id="screen-statistiques">
+    <div class="topbar">
+      <h1>Statistiques</h1>
+      <div class="subtitle">Tes performances</div>
+    </div>
+    <div class="scroll-area" id="stats-content">
+      <div class="empty-state"><div class="empty-icon">📊</div><p>Chargement...</p></div>
+    </div>
+  </div>
+
+  <!-- ══════════ HISTORIQUE (accessible depuis le profil) ══════════ -->
+  <div class="screen" id="screen-historique">
+    <div class="topbar">
+      <h1>Historique</h1>
+      <div class="subtitle">Tes dernières séances</div>
+    </div>
+    <div class="scroll-area">
+      <div class="histo-list" id="histo-list">
+        <div class="empty-state"><div class="empty-icon">📅</div><p>Aucune séance pour l'instant.</p></div>
+      </div>
+    </div>
+    <button class="btn secondary back-btn" onclick="showScreen('profil')">Retour au profil</button>
+  </div>
+
+  <!-- ══════════ PROFIL ══════════ -->
+  <div class="screen" id="screen-profil">
+    <div class="topbar">
+      <h1>Profil</h1>
+    </div>
+    <div class="scroll-area">
+      <div class="profil-card">
+        <div class="profil-avatar-wrap" onclick="document.getElementById('pdp-input').click()">
+          <div class="profil-avatar" id="profil-avatar">--</div>
+          <div class="profil-avatar-edit">Modifier</div>
+        </div>
+        <input type="file" id="pdp-input" accept="image/*" style="display:none" onchange="handlePdpChange(event)">
+        <div class="profil-name" id="profil-name">--</div>
+        <div class="profil-email" id="profil-email">--</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-val" id="stat-seances">0</div><div class="stat-label">Séances total</div></div>
+        <div class="stat-card"><div class="stat-val" id="stat-pts-total">0</div><div class="stat-label">Points total</div></div>
+        <div class="stat-card"><div class="stat-val" id="stat-pr">0</div><div class="stat-label">PR battus</div></div>
+        <div class="stat-card"><div class="stat-val" id="stat-streak">0</div><div class="stat-label">Séances ce mois</div></div>
+      </div>
+
+      <div class="section-title">Tes séances personnalisées</div>
+      <div class="pr-list" id="profil-custom-seances">
+        <div class="empty-state" style="padding:12px"><p>Aucune séance personnalisée</p></div>
+      </div>
+
+      <div class="profil-nav-list">
+        <div class="profil-nav-item" onclick="showScreen('historique')">
+          <span class="profil-nav-icon">📅</span>
+          <span class="profil-nav-label">Historique des séances</span>
+          <span class="profil-nav-arrow">›</span>
+        </div>
+        <div class="profil-nav-item" onclick="showScreen('statistiques')">
+          <span class="profil-nav-icon">📊</span>
+          <span class="profil-nav-label">Statistiques</span>
+          <span class="profil-nav-arrow">›</span>
+        </div>
+        <div class="profil-nav-item" onclick="showScreen('settings')">
+          <span class="profil-nav-icon">⚙️</span>
+          <span class="profil-nav-label">Paramètres</span>
+          <span class="profil-nav-arrow">›</span>
+        </div>
+      </div>
+
+      <button class="btn admin-btn" id="admin-btn" style="display:none" onclick="showScreen('admin')">Panel Admin</button>
+
+      <div class="section-title">Communauté</div>
+      <div class="community-list">
+        <div class="community-item" onclick="window.open('https://discord.gg/evay3xKrFF','_blank')">
+          <span class="community-item-icon">💬</span>
+          <div class="community-item-info">
+            <div class="community-item-label">Discord officiel</div>
+            <div class="community-item-sub">Rejoins le serveur</div>
+          </div>
+          <span class="community-item-arrow">›</span>
+        </div>
+        <div class="community-item" onclick="window.open('https://t.me/next_form_project','_blank')">
+          <span class="community-item-icon">✈️</span>
+          <div class="community-item-info">
+            <div class="community-item-label">Telegram officiel</div>
+            <div class="community-item-sub">Suis les actualités</div>
+          </div>
+          <span class="community-item-arrow">›</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PARAMÈTRES ══════════ -->
+  <div class="screen" id="screen-settings">
+    <div class="topbar">
+      <h1>Paramètres</h1>
+    </div>
+    <div class="scroll-area" id="settings-content">
+    </div>
+    <button class="btn secondary back-btn" onclick="showScreen('profil')">Retour au profil</button>
+  </div>
+
+  <!-- ══════════ PROFIL AUTRE ══════════ -->
+  <div class="screen" id="screen-user-profil">
+    <div class="topbar">
+      <h1 id="user-profil-title">Profil</h1>
+    </div>
+    <div class="scroll-area" id="user-profil-content">
+      <div class="empty-state"><p>Chargement...</p></div>
+    </div>
+    <button class="btn secondary back-btn" onclick="showScreen('classement')">Retour au classement</button>
+  </div>
+
+  <!-- ══════════ ADMIN ══════════ -->
+  <div class="screen" id="screen-admin">
+    <div class="topbar">
+      <h1>Admin</h1>
+      <div class="subtitle">Gestion du serveur</div>
+    </div>
+    <div class="scroll-area" id="admin-content">
+      <div class="section-title">Exo bonus de la semaine</div>
+      <div class="admin-card">
+        <select class="admin-select" id="admin-bonus-select">
+          <option value="">-- Choisir l'exo bonus --</option>
+        </select>
+        <div class="field"><label>Nombre de séries</label><input type="number" id="admin-bonus-series" placeholder="4" min="1" max="10"></div>
+        <div class="field"><label>Message personnalisé</label><input type="text" id="admin-bonus-text" placeholder="Ex: Objectif 100kg cette semaine !"></div>
+        <button class="btn" onclick="adminSetBonus()">Appliquer</button>
+      </div>
+
+      <div class="section-title">Séance bonus du mois</div>
+      <div class="admin-card">
+        <div class="field"><label>Nom de la séance bonus</label><input type="text" id="admin-bonus-seance-nom" placeholder="Ex: Challenge Squat"></div>
+        <div class="field"><label>Exercices (sélectionnés ci-dessous)</label></div>
+        <div class="exo-select-list admin-bonus-exos" id="admin-bonus-exo-list"></div>
+        <div class="field"><label>Points bonus par complétion</label><input type="number" id="admin-bonus-seance-pts" placeholder="100" min="1" max="500"></div>
+        <button class="btn" onclick="adminSetBonusSeance()">Appliquer séance bonus</button>
+      </div>
+
+      <div class="section-title">Créer une séance universelle</div>
+      <div class="admin-card">
+        <div class="field"><label>Nom de la séance</label><input type="text" id="admin-univ-nom" placeholder="Ex: Full body"></div>
+        <div class="exo-select-list" id="admin-univ-exo-list"></div>
+        <button class="btn" onclick="adminCreateUniversalSeance()">Créer pour tous</button>
+      </div>
+
+      <div class="section-title">Enlever des points à un joueur</div>
+      <div class="admin-card">
+        <select class="admin-select" id="admin-points-user-select">
+          <option value="">-- Choisir un joueur --</option>
+        </select>
+        <div class="field"><label>Points à enlever</label><input type="number" id="admin-points-amount" placeholder="Ex: 50" min="1"></div>
+        <button class="btn danger" onclick="adminRemovePoints()">Enlever les points</button>
+      </div>
+
+      <div class="section-title">Reset points d'un joueur</div>
+      <div class="admin-card">
+        <select class="admin-select" id="admin-user-select">
+          <option value="">-- Choisir un joueur --</option>
+        </select>
+        <button class="btn danger" onclick="adminResetPoints()">Reset ses points</button>
+      </div>
+
+      <div class="section-title">Supprimer une séance d'un joueur</div>
+      <div class="admin-card">
+        <select class="admin-select" id="admin-seance-select">
+          <option value="">-- Choisir un joueur --</option>
+        </select>
+        <button class="btn" onclick="adminLoadSeancesForUser()">Charger ses séances du jour</button>
+        <div id="admin-seance-list" style="margin-top:12px"></div>
+      </div>
+
+      <button class="btn secondary" onclick="showScreen('profil')" style="margin-top:24px">Retour au profil</button>
+    </div>
+  </div>
+
+  <!-- ══════════ NUTRITION ══════════ -->
+  <div class="screen" id="screen-nutrition">
+    <div class="topbar">
+      <h1>Nutrition</h1>
+      <div class="subtitle" id="nutri-date">Aujourd'hui</div>
+    </div>
+    <div class="scroll-area" id="nutri-content">
+      <div class="empty-state"><p>Chargement...</p></div>
+    </div>
+  </div>
+
+  <!-- ══════════ TAB BAR ══════════ -->
+  <div class="tabbar" id="tabbar" style="display:none">
+    <div class="tab active" id="tab-classement" onclick="showScreen('classement')">
+      <div class="tab-icon">🏆</div>
+      <div class="tab-label">Rank</div>
+    </div>
+    <div class="tab" id="tab-seance" onclick="showScreen('seance')">
+      <div class="tab-icon">➕</div>
+      <div class="tab-label">Séance</div>
+    </div>
+    <div class="tab" id="tab-chrono" onclick="showScreen('chrono')">
+      <div class="tab-icon">⏱️</div>
+      <div class="tab-label">Chrono</div>
+    </div>
+    <div class="tab" id="tab-nutrition" onclick="showScreen('nutrition')">
+      <div class="tab-icon">🍽️</div>
+      <div class="tab-label">Nutrition</div>
+    </div>
+    <div class="tab" id="tab-profil" onclick="showScreen('profil')">
+      <div class="tab-icon">👤</div>
+      <div class="tab-label">Profil</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM SHEET — détail séance perso -->
+  <div class="sheet-backdrop" id="seance-sheet-backdrop" onclick="closeSeanceSheet()"></div>
+  <div class="sheet" id="seance-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="seance-sheet-title"></div>
+    <div class="sheet-body" id="seance-sheet-body"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script src="js/aliments.js"></script>
+  <script src="js/exercises.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
